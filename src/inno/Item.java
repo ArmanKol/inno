@@ -95,7 +95,7 @@ public class Item {
 			
 			this.setLink(json.getString("link"));
 			this.setName(json.getString("name"));
-			this.setLabel(json.getString("label"));
+			//this.setLabel(json.getString("label"));
 			this.setType(json.getString("type"));
 			//this.setCategory(json.getString("category"));
 			this.setState(json.getString("state"));
@@ -117,7 +117,7 @@ public class Item {
 		String stateOn = "ON";
 		String stateOff = "OFF";
 		
-		if((stateOn.equals(state) || stateOff.equals(state))) {
+		if(stateOn.equals(state) || stateOff.equals(state) || state instanceof String) {
 			if(this.getState() != null) {
 				this.setState(state);
 			}
@@ -146,19 +146,19 @@ public class Item {
 			}
 			
 		}else {
-			LOG.log(Level.SEVERE, "Een State moet ON of OFF zijn");
+			LOG.log(Level.SEVERE, ".");
 		}
 	}
 	
 	/*
 	 * Deze methode returned alle items in een lijst die geconfigureerd zijn in openHab.
 	 */
-	public List<Item> getAllItems(){
-		ArrayList<Item>  items = new ArrayList<>();
+	public List<Item> getAllItems(String member, boolean getGroupItemsList){
+	    Item item;
+	    ArrayList<Item>  items = new ArrayList<>();
 		JSONObject json;
-		Item item;
 	    try {
-	    	connection = this.initURLConnection(null, "GET", false);
+	    	connection = this.initURLConnection(member, "GET", getGroupItemsList);
 	    	StringBuilder result = new StringBuilder();
 	    	final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		    String line;
@@ -169,22 +169,24 @@ public class Item {
 	    	
 	    	//VERWIJDER brackets[]
 	    	String newItemsString;
-	    	newItemsString = result.toString().substring(1, result.toString().length() -1);
+	    	newItemsString = result.toString().substring(13, result.toString().length() -1);
 	    	
 	    	//SPLIT STRING
-	    	String [] parts = newItemsString.split("},");
+	    	String [] parts = newItemsString.split("\\}\\,\\{");
+	    	
+	    	//System.out.println(parts[0]);
 	    	
 	    	//VOEG CURLY BRACKETS TOE{
 	    	for(int x=0; x < parts.length; x++) {
-	    		if(x < parts.length -1) {
+	    		if(x < parts.length) {
+	    			parts[x] = "{" + parts[x];
 	    			parts[x]+="}";
 	    		}
 	    		json = new JSONObject(parts[x]);
 	    		item = new Item(json.getString("link"), json.getString("name"), json.getString("label"), 
-						json.getString("type"), json.getString("category"), json.getString("state"), json.getBoolean("editable"));
+						json.getString("type"), null, json.getString("state"), json.getBoolean("editable"));
 	    		items.add(item);
 	    	}
-	    	connection.disconnect();
 	      }catch(IOException e) {
 	    	  LOG.log(Level.SEVERE , "getInputStream() throws IOException");
 	      }
