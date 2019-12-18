@@ -77,7 +77,6 @@ public class Item {
 	public Item createItemFromItemName(String itemName) {
 		BufferedReader bufferedReader;
 		String inputLine;
-		//Item item = new Item();
 		try {
 			Item.connection = this.initURLConnection(itemName, "GET", true);
 			
@@ -101,9 +100,8 @@ public class Item {
 			this.setState(json.getString("state"));
 			this.setEditable( json.getBoolean("editable"));
 
-			connection.disconnect();
 		}catch(IOException e) {
-			LOG.log(Level.SEVERE, "getOutputStream throws IOException. Check of de opgegeven itemNaam bestaat.");
+			LOG.log(Level.SEVERE, "getOutputStream throws IOException. Check of de opgegeven itemNaam bestaat: " + itemName);
 		}
 		return this;
 		
@@ -140,7 +138,6 @@ public class Item {
 				}
 				
 				writer.close();
-				connection.disconnect();
 			}catch(IOException e) {
 				LOG.log(Level.SEVERE, "IOException: Geen outputstream gevonden. Check of de itemNaam klopt");
 			}
@@ -173,8 +170,6 @@ public class Item {
 	    	
 	    	//SPLIT STRING
 	    	String [] parts = newItemsString.split("\\}\\,\\{");
-	    	
-	    	//System.out.println(parts[0]);
 	    	
 	    	//VOEG CURLY BRACKETS TOE{
 	    	for(int x=0; x < parts.length; x++) {

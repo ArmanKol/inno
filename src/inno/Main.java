@@ -6,9 +6,11 @@ public class Main {
 		Item items = new Item();
 		
 		for(Item item : items.getAllItems("EnergyConsumption", true)) {
-			Thread mt = new Thread(new MultiThreading(item));
+			Thread mt = new Thread(new MultiThreading(item, item.getName()));
 			mt.start();
 		}
+
+		//Gui gui = new Gui();
 		
 	}
 
