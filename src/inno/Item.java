@@ -55,10 +55,10 @@ public class Item {
 		HttpURLConnection temporaryConnection;
 		try {
 			URL url;
-			if(!getOneItem) {
-				url = new URL("http://localhost:8080/rest/items/");
+			if(!getOneItem) { //192.168.8.149
+				url = new URL("http://192.168.8.149:8080/rest/items/");
 			}else {
-				url = new URL("http://localhost:8080/rest/items/" + item);
+				url = new URL("http://192.168.8.149:8080/rest/items/" + item);
 			}
 			
 			temporaryConnection = (HttpURLConnection) url.openConnection();
