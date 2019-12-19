@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 /*
  * Dit is de gui class. Dit creëert een gui
@@ -58,12 +58,12 @@ public class GuiConfig {
 		buttonWrite.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent event){
 				try (FileWriter file = new FileWriter("config.json")) {
-					JSONObject json = new JSONObject();
 					
-					json.put("inschakelen", inschakelen.getText());
-					json.put("uitschakelen", uitschakelen.getText());
+					JsonObject json = new JsonObject();
+					json.addProperty("inschakelen", inschakelen.getText());
+					json.addProperty("uitschakelen", uitschakelen.getText());
 					
-					file.write(json.toJSONString());
+					file.write(json.toString());
 				}catch(IOException ioe) {
 					ioe.printStackTrace();
 				}

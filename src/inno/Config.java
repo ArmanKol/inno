@@ -5,9 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class Config {
 	private String inschakelen;
@@ -20,18 +19,17 @@ public class Config {
 	
 	public void readJson() 
 	{
-		JSONParser jsonParser = new JSONParser();
+		JsonParser jsonParser = new JsonParser();
 		try (Reader reader = new FileReader("config.json")){
-			JSONObject json = (JSONObject) jsonParser.parse(reader);
-			inschakelen = (String) json.get("inschakelen");
-			uitschakelen = (String) json.get("uitschakelen");
+			
+			JsonObject json = (JsonObject) jsonParser.parse(reader);
+			inschakelen = json.getAsJsonPrimitive("inschakelen").toString();
+			uitschakelen = json.getAsJsonPrimitive("uitschakelen").toString();
 			
 		}catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}catch(IOException ioe) {
 			ioe.printStackTrace();
-		}catch(ParseException pe) {
-			pe.printStackTrace();
 		}
 	}
 	
