@@ -56,9 +56,9 @@ public class Item {
 		try {
 			URL url;
 			if(!getOneItem) { //192.168.8.149
-				url = new URL("http://192.168.8.149:8080/rest/items/");
+				url = new URL("http://192.168.2.15:8080/rest/items/");
 			}else {
-				url = new URL("http://192.168.8.149:8080/rest/items/" + item);
+				url = new URL("http://192.168.2.15:8080/rest/items/" + item);
 			}
 			
 			temporaryConnection = (HttpURLConnection) url.openConnection();
@@ -98,7 +98,7 @@ public class Item {
 			this.setType(json.getString("type"));
 			//this.setCategory(json.getString("category"));
 			this.setState(json.getString("state"));
-			this.setEditable( json.getBoolean("editable"));
+			//this.setEditable( json.getBoolean("editable"));
 
 		}catch(IOException e) {
 			LOG.log(Level.SEVERE, "getOutputStream throws IOException. Check of de opgegeven itemNaam bestaat: " + itemName);
@@ -179,7 +179,7 @@ public class Item {
 	    		}
 	    		json = new JSONObject(parts[x]);
 	    		item = new Item(json.getString("link"), json.getString("name"), json.getString("label"), 
-						json.getString("type"), null, json.getString("state"), json.getBoolean("editable"));
+						json.getString("type"), null, json.getString("state"), false);
 	    		items.add(item);
 	    	}
 	      }catch(IOException e) {
